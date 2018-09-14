@@ -4,7 +4,6 @@ A TCP server that receives raw audio and reply with disfluency tags.
 from __future__ import print_function
 
 from contextlib import contextmanager
-import json
 import os
 import Queue
 import socket
@@ -15,6 +14,8 @@ from deep_disfluency.asr.ibm_watson import IBMWatsonAdapter
 from deep_disfluency.tagger.deep_tagger_module import DeepTaggerModule
 import fluteline
 import watson_streaming
+
+import nodes
 
 HOST = ''  # Symbolic name meaning all available interfaces
 PORT = 50007  # Arbitrary non-privileged port
@@ -36,16 +37,6 @@ def silence_stdout():
         sys.stdout = old_target
 
 
-class Responder(fluteline.Consumer):
-    def __init__(self, conn):
-        super(Responder, self).__init__()
-        self.conn = conn
-
-    def consume(self, item):
-        msg = json.dumps(item)
-        self.conn.sendall(msg + '\n')
-
-
 class TCPHandler(threading.Thread):
     def __init__(self, conn):
         super(TCPHandler, self).__init__()
@@ -58,8 +49,9 @@ class TCPHandler(threading.Thread):
                 watson_streaming.Transcriber(WATSON_SETTINGS, CREDENTIALS),
                 IBMWatsonAdapter(),
                 DeepTaggerModule(),
-                # Filter
-                Responder(self.conn),
+                nodes.DisfluenciesFilter(),
+                nodes.ChangeFilter(),
+                nodes.Responder(self.conn),
             ]
 
         fluteline.connect(pipeline)
