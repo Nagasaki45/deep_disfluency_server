@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2f04caaef0e92c9edb85c2966b9002b7645c6ad0b9f0a6103278809a7753736b"
+            "sha256": "b9e9cb08702c2054d98309e486705f1ce53e82c0e95cd3022fb655d4d68a6c37"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -33,17 +33,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:0115b91312737ee24b263c45573a7ab7def6e7fa22e4cd3814ef477ae811f6cd",
-                "sha256:d0f77b445f16e3767d8d9f7377e4bdbdfe39de12265ca4802d6dc1179409f91c"
+                "sha256:2152e0da8098665e6a03bbbde1de1b4fafdef7151010d1f0e53693a3f2a1deb0",
+                "sha256:323660fd1aa9c95fe90003f44c5fc37cbb891a8b506fa346967d14edcbcb90a4"
             ],
-            "version": "==1.9.1"
+            "version": "==1.9.4"
         },
         "botocore": {
             "hashes": [
-                "sha256:4ad98a51ee04568bb625fe245c42e2a4fd6330e2929614140175fb54f13f2d8e",
-                "sha256:971ac2892aeda8cc0c1d74b0d8927dc153ee2681923e3366b632be528f459b28"
+                "sha256:3b2cab368572ee987a6236321ddea491e4253c819009c87ebc9e42e60371e3ae",
+                "sha256:7834eba53c6bedea21eb76f25a39e477dede3a24aeb51ff19c0248ea8348f007"
             ],
-            "version": "==1.12.1"
+            "version": "==1.12.4"
         },
         "bz2file": {
             "hashes": [
@@ -112,7 +112,7 @@
         "deep-disfluency": {
             "editable": true,
             "git": "https://github.com/nagasaki45/deep_disfluency",
-            "ref": "63edbc25ce6fd725a9acec55a423449287dd5631"
+            "ref": "4aacc244c02bba8732946fc3d9d807af057946bb"
         },
         "docutils": {
             "hashes": [
@@ -124,11 +124,11 @@
         },
         "fluteline": {
             "hashes": [
-                "sha256:bbb70436f1ea4f9744124a0b9f617a5f6c3bcf66f6d7981f93d930f05d5bbee9",
-                "sha256:e3da0bdc7e113b1a0f465a096e540d3df0c04b596ed0f5e9e415db3803fc0c70"
+                "sha256:1f7c9a5ebf1ffc36411591bb7e108fe04789c9929850f6ecab385fb166c0e31f",
+                "sha256:4c3a72df325545ddd8d7d5ba94f7766c63e026bce260645d6a24aced53f0ceb2"
             ],
             "index": "pypi",
-            "version": "==0.0.5"
+            "version": "==0.0.8"
         },
         "futures": {
             "hashes": [
@@ -493,10 +493,11 @@
         },
         "watson-streaming": {
             "hashes": [
-                "sha256:57c3b94a1cfcb62be131058136e61d526e6203230ae11835bf3dc49ff7c40bda"
+                "sha256:53ec10a79f5c051a8065112c737304fe301269881edaab51891c0a6d99132ed9",
+                "sha256:cf0d03e2728fb7aa094e2dc7371075f6883d9602b7bce3908f4ee700c5c5d564"
             ],
             "index": "pypi",
-            "version": "==0.0.6"
+            "version": "==0.0.7"
         },
         "websocket-client": {
             "hashes": [

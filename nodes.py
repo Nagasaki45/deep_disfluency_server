@@ -16,7 +16,7 @@ class ChangeFilter(fluteline.SynchronousConsumer):
         previous_tag = self.tags.get(item['id'])
         if item['disf_tag'] != previous_tag:
             self.tags[item['id']] = item['disf_tag']
-            self.put(item)
+            self.output.put(item)
 
 
 class DisfluenciesFilter(fluteline.SynchronousConsumer):
@@ -31,7 +31,7 @@ class DisfluenciesFilter(fluteline.SynchronousConsumer):
     def consume(self, item):
         for disfluent_tag in self.disfluent_tags:
             if item['disf_tag'].startswith(disfluent_tag):
-                self.put(item)
+                self.output.put(item)
                 break
 
 

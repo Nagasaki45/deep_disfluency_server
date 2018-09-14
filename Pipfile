@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-deep-disfluency = {editable = true, ref = "pip", git = "https://github.com/nagasaki45/deep_disfluency"}
+deep-disfluency = {editable = true, ref = "top", git = "https://github.com/nagasaki45/deep_disfluency"}
 fluteline = "*"
 watson-streaming = "*"
 sounddevice = "*"
