@@ -1,7 +1,30 @@
 import json
+import time
 
 import fluteline
 
+
+class Logger(fluteline.SynchronousConsumer):
+    '''
+    Log messages.
+    '''
+    def __init__(self, addr):
+        super(Logger, self).__init__()
+        ip, port = addr
+        ip = ip.replace('.', '-')
+        now = time.strftime("%Y%m%d-%H%M%S")
+        self.filename = '{}_{}_{}.log'.format(now, ip, port)
+
+    def enter(self):
+        self.file = open(self.filename, 'a')
+
+    def exit(self):
+        self.file.close()
+
+    def consume(self, item):
+        json.dump(item, self.file)
+        self.file.write('\n')
+        self.output.put(item)
 
 
 class ChangeFilter(fluteline.SynchronousConsumer):

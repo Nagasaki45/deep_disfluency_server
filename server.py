@@ -37,10 +37,11 @@ def silence_stdout():
         sys.stdout = old_target
 
 
-def get_pipeline():
+def get_pipeline(addr):
     return [
         watson_streaming.Transcriber(WATSON_SETTINGS, CREDENTIALS),
         IBMWatsonAdapter(),
+        nodes.Logger(addr),
         DeepTaggerModule(),
         nodes.DisfluenciesFilter(),
         nodes.ChangeFilter(),
@@ -51,7 +52,7 @@ def handler(conn, addr):
     print(addr, 'connected')
 
     with silence_stdout():
-        pipeline = get_pipeline()
+        pipeline = get_pipeline(addr)
 
     responder = nodes.Responder(conn)
     pipeline.append(responder)
