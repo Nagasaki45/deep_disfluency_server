@@ -1,0 +1,5 @@
+deep-disfluency
+fluteline
+watson-streaming
+sounddevice
+scikit-learn==0.18.1  # Unpickle properly

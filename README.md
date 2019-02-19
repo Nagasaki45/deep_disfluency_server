@@ -9,7 +9,8 @@ For more information about the tagging check the [deep_disfluency](https://githu
 ## Installation
 
 - Obtain a `credentials.json` file from IBM Watson as described [here](https://watson-streaming.readthedocs.io/en/latest/installation.html), and put it in the project directory.
-- `pipenv run python server.py`
+- Install dependencies with `pip install -r requirements.txt`. Suggestion: use [`pip-tools`](https://github.com/jazzband/pip-tools/) inside a virtual environment instead.
+- `python server.py`
 
 ## `client.py`
 

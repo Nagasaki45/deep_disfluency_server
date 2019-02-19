@@ -1,2 +1,4 @@
 credentials.json
 *.log
+env/
+*.pyc
