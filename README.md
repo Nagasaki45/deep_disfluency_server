@@ -9,7 +9,8 @@ For more information about the tagging check the [deep_disfluency](https://githu
 ## Installation
 
 - Obtain a `credentials.json` file from IBM Watson as described [here](https://watson-streaming.readthedocs.io/en/latest/installation.html), and put it in the project directory.
-- Install dependencies with `pip install -r requirements.txt`. Suggestion: use [`pip-tools`](https://github.com/jazzband/pip-tools/) inside a virtual environment instead.
+- Create a python 2 virtual environment (sorry for misbehaving) with `virtualenv --python python2 env` and activate it with `source env/bin/activate`.
+- Install dependencies with `pip install -r requirements.txt`. Suggestion: use [`pip-tools`](https://github.com/jazzband/pip-tools/) instead.
 - `python server.py`
 
 ## `client.py`
