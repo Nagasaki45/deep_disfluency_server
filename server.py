@@ -36,14 +36,16 @@ def get_pipeline(watson_settings, credentials, addr):
     return [
         watson_streaming.Transcriber(watson_settings, credentials),
         IBMWatsonAdapter(),
+        nodes.Profiler('post_adapter'),
         nodes.Logger(addr),
         DeepTaggerModule(),
+        nodes.Profiler('post_tagger'),
         nodes.DisfluenciesFilter(),
         nodes.ChangeFilter(),
     ]
 
 
-def handler(conn, addr, watson_settings, credentials):
+def handler(conn, addr, watson_settings, credentials, profile):
     print(addr, 'connected')
 
     with silence_stdout():
@@ -51,6 +53,9 @@ def handler(conn, addr, watson_settings, credentials):
 
     responder = nodes.Responder(conn)
     pipeline.append(responder)
+
+    if not profile:
+        pipeline = [n for n in pipeline if not isinstance(n, nodes.Profiler)]
 
     fluteline.connect(pipeline)
     fluteline.start(pipeline)
@@ -82,6 +87,10 @@ def parse_arguments(args):
         '--port', default=50007,
         help='TCP port (default: 50007)',
     )
+    parser.add_argument(
+        '--profile', action='store_true',
+        help='Messages will contain additional timing information',
+    )
     return parser.parse_args()
 
 
@@ -96,7 +105,9 @@ def main():
 
         while True:
             conn, addr = sock.accept()
-            handler_args = [conn, addr, watson_settings, args.credentials]
+            handler_args = [
+                conn, addr, watson_settings, args.credentials, args.profile
+            ]
             handler_thread = threading.Thread(target=handler, args=handler_args)
             handler_thread.daemon = True
             handler_thread.start()

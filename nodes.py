@@ -66,3 +66,16 @@ class Responder(fluteline.Consumer):
     def consume(self, item):
         msg = json.dumps(item)
         self.conn.sendall(msg + '\n')
+
+
+class Profiler(fluteline.SynchronousConsumer):
+    '''
+    Add a timestamp to incoming messages.
+    '''
+    def __init__(self, key):
+        super(Profiler, self).__init__()
+        self.key = key
+
+    def consume(self, item):
+        item[self.key] = time.time()
+        self.output.put(item)
