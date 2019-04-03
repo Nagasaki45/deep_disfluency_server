@@ -3,7 +3,9 @@ A TCP server that receives raw audio and reply with disfluency tags.
 """
 from __future__ import print_function
 
+import argparse
 import contextlib
+import json
 import os
 import socket
 import sys
@@ -17,14 +19,7 @@ import watson_streaming
 import nodes
 
 HOST = ''  # Symbolic name meaning all available interfaces
-PORT = 50007  # Arbitrary non-privileged port
 TCP_INPUT_BUFFER_SIZE = 1024  # Number of bytes to read from TCP socket
-WATSON_SETTINGS = {
-    'inactivity_timeout': -1,  # Don't kill me after 30 seconds
-    'interim_results': True,
-    'timestamps': True
-}
-CREDENTIALS = 'credentials.json'
 SOCKET_SETTINGS = (socket.AF_INET, socket.SOCK_STREAM)
 
 
@@ -37,9 +32,9 @@ def silence_stdout():
         sys.stdout = old_target
 
 
-def get_pipeline(addr):
+def get_pipeline(watson_settings, credentials, addr):
     return [
-        watson_streaming.Transcriber(WATSON_SETTINGS, CREDENTIALS),
+        watson_streaming.Transcriber(watson_settings, credentials),
         IBMWatsonAdapter(),
         nodes.Logger(addr),
         DeepTaggerModule(),
@@ -48,11 +43,11 @@ def get_pipeline(addr):
     ]
 
 
-def handler(conn, addr):
+def handler(conn, addr, watson_settings, credentials):
     print(addr, 'connected')
 
     with silence_stdout():
-        pipeline = get_pipeline(addr)
+        pipeline = get_pipeline(watson_settings, credentials, addr)
 
     responder = nodes.Responder(conn)
     pipeline.append(responder)
@@ -73,15 +68,36 @@ def handler(conn, addr):
     print(addr, 'disconnected')
 
 
+def parse_arguments(args):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '--credentials', default='credentials.json',
+        help='Path to Watson credentials file (default: credentials.json)',
+    )
+    parser.add_argument(
+        '--watson-settings', default='watson_settings.json',
+        help='Path to Watson settings file (default: watson_settings.json)',
+    )
+    parser.add_argument(
+        '--port', default=50007,
+        help='TCP port (default: 50007)',
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_arguments(sys.argv[1:])
+    with open(args.watson_settings) as f:
+        watson_settings = json.load(f)
     with contextlib.closing(socket.socket(*SOCKET_SETTINGS)) as sock:
-        sock.bind((HOST, PORT))
+        sock.bind((HOST, args.port))
         sock.listen(1)
         print('Server listening')
 
         while True:
-            conn_addr = sock.accept()
-            handler_thread = threading.Thread(target=handler, args=conn_addr)
+            conn, addr = sock.accept()
+            handler_args = [conn, addr, watson_settings, args.credentials]
+            handler_thread = threading.Thread(target=handler, args=handler_args)
             handler_thread.daemon = True
             handler_thread.start()
 
