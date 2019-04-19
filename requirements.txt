@@ -34,6 +34,6 @@ six==1.12.0               # via gensim, nltk, python-dateutil, singledispatch, t
 smart-open==1.8.0         # via gensim
 sounddevice==0.3.12
 theano==1.0.4             # via deep-disfluency
-urllib3==1.24.1           # via botocore, requests
+urllib3==1.24.2
 watson-streaming==0.0.12
 websocket-client==0.54.0  # via watson-streaming
